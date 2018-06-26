@@ -1,0 +1,25 @@
+properties([
+		parameters([
+		string(name: 'build', defaultValue: 'build', description: 'Nom du Build', ),
+		string(name: 'description', defaultValue: 'description', description: 'Description du Build', )
+		])
+	])
+node {
+		currentBuild.displayName = "${params.build}"
+		currentBuild.description = "${params.description}"
+
+		stage('Déploiement des containers Docker') {
+		docker.image('mysql:5.7.22').withRun('-e "MYSQL_ROOT_PASSWORD=root"') { c ->
+			docker.image('mysql:5.7.22').inside("--link ${c.id}:db") {
+				/* Wait until mysql service is up */
+				sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
+			}
+			docker.image('fjudith/squash-tm:latest').inside("--link ${c.id}:db") {
+				/*
+				 * Run some tests which require MySQL, and assume that it is
+				 * available on the host name `db`
+				 */
+				 sh 'make check'
+				 sh 'mysql -h db -u root -pmy-secret-pw -e "show databases;"'
+		}}}
+}
