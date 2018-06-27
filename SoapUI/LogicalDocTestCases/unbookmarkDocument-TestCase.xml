@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="330cb14b-9a44-4471-9ca9-a302233d7bc3" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="unbookmarkDocument TestCase" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:description>Ce cas de test vérifie que la suppression d'un favori sur un document est effective</con:description><con:settings/><con:testStep type="request" id="a064af58-2b8f-4e92-9195-93a53a021916" name="login - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapAuthServiceServiceSoapBinding</con:interface><con:operation>login</con:operation><con:request name="login - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="ad46a3d5-af02-4752-83f3-63a5f0683158"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/services/Auth</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.logicaldoc.com">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:login>\r
+         <!--Optional:-->\r
+         <username>admin</username>\r
+         <!--Optional:-->\r
+         <password>admin</password>\r
+      </ws:login>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="aad00c67-bd15-4393-b44c-0d640c9e5fa2" name="SOAP Response"/><con:assertion type="GroovyScriptAssertion" id="a18332a5-5c19-4e4e-9533-26019b9dbe67" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://endpoint.soap.webservice.logicaldoc.com/Auth/login"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer" id="31c5f3d5-aada-466d-bcae-d744916bab2d"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>sid</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>login - Request 1</con:sourceStep><con:sourcePath>declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://ws.logicaldoc.com';
+
+//ns2:loginResponse/return</con:sourcePath><con:targetType>sid</con:targetType><con:targetStep>Properties</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="request" id="95680175-e64a-4d09-a0e9-c59c22722861" name="create - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapDocumentServiceServiceSoapBinding</con:interface><con:operation>create</con:operation><con:request name="create - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="0df796d5-b843-4b31-bd59-f9bd9a3dffc4"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/services/Document</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.logicaldoc.com">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:create>
+         <!--Optional:-->
+         <sid>${Properties#sid}</sid>
+         <!--Optional:-->
+         <document>
+            <!--Zero or more repetitions:-->
+            <attributes>
+               <!--Optional:-->
+               <editor>${Properties#editor}</editor>
+               <!--Optional:-->
+               <mandatory>${Properties#mandatory}</mandatory>
+               <!--Optional:-->
+               <name>${Properties#name}</name>
+               <!--Optional:-->
+               <type>${Properties#type}</type>
+               <!--Optional:-->
+            </attributes>
+            <!--Optional:-->
+            <date>${Properties#date}</date>
+            <!--Optional:-->
+            <fileName>${Properties#fileName}</fileName>
+            <fileSize>${Properties#fileSize}</fileSize>
+            <!--Optional:-->
+            <!--Optional:-->
+            <folderId>${Properties#folderId}</folderId>
+            <!--Optional:-->
+            <id>${Properties#id}</id>
+            <!--Optional:-->
+            <title>${Properties#title}</title>
+            <!--Optional:-->
+            <type>${Properties#type2}</type>
+            <!--Optional:-->
+            <tags>${Properties#tag}</tags>
+         </document>
+         <!--Optional:-->
+         <content>${Properties#content}</content>
+      </ws:create>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="4a74ef21-4aea-4357-8adf-237eedf6ed05" name="SOAP Response"/><con:assertion type="SOAP Fault Assertion" id="3cc98229-ac15-40a6-8d98-134bee224308" name="Not SOAP Fault"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://endpoint.soap.webservice.logicaldoc.com/Document/create"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer 2" id="775c04b7-e13f-448c-9a5e-4787ec02f562"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>docid</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>create - Request 1</con:sourceStep><con:sourcePath>declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://ws.logicaldoc.com';
+
+//ns2:createResponse/document/id</con:sourcePath><con:targetType>docid</con:targetType><con:targetStep>Properties</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="request" id="a3fd4e62-66ed-4b40-b589-7a1244c62385" name="bookmarkDocument"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapBookmarkServiceServiceSoapBinding</con:interface><con:operation>bookmarkDocument</con:operation><con:request name="bookmarkDocument" id="c766a3be-dda9-40b5-a66d-0c6fb405b907"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/services/Bookmark</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.logicaldoc.com">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:bookmarkDocument>\r
+         <!--Optional:-->\r
+         <sid>${Properties#sid}</sid>\r
+         <docId>${Properties#docid}</docId>\r
+      </ws:bookmarkDocument>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="a79b0f77-2b32-4a81-b443-8d7f244f3e36" name="Not SOAP Fault"/><con:assertion type="SOAP Response" id="0ad47621-87ee-4085-821c-daed14c6dff7" name="SOAP Response"/><con:assertion type="Simple Contains" id="958d97a9-c780-437c-8bea-6a9bbb8a9d44" name="ContainsTitle"><con:configuration><token>title</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple Contains" id="cdb75c32-a85e-4b96-865c-be56a444f23d" name="ContainsUserId"><con:configuration><token>1</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://endpoint.soap.webservice.logicaldoc.com/Bookmark/bookmarkDocument" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="ab0e6a0e-9c2c-4497-98f4-a3669487936c" name="getBookmarks"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapBookmarkServiceServiceSoapBinding</con:interface><con:operation>getBookmarks</con:operation><con:request name="getBookmarks" id="ec1b2216-b793-4100-a752-d188e2be28f9"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/services/Bookmark</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.logicaldoc.com">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:getBookmarks>\r
+         <!--Optional:-->\r
+         <sid>${Properties#sid}</sid>\r
+      </ws:getBookmarks>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d26d701f-b564-48da-b198-a409bc62e13a" name="SOAP Response"/><con:assertion type="Simple Contains" id="3e3f43a3-8194-4c20-b777-239875fdde4a" name="ContainsTitle"><con:configuration><token>Title</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="SOAP Fault Assertion" id="f731e469-de68-40b9-974e-1a8f1ca9131a" name="Not SOAP Fault"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://endpoint.soap.webservice.logicaldoc.com/Bookmark/getBookmarks" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="f238d854-0e94-4cb7-845a-31501a125434" name="unbookmarkDocument"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapBookmarkServiceServiceSoapBinding</con:interface><con:operation>unbookmarkDocument</con:operation><con:request name="unbookmarkDocument" id="fcccbaa6-566a-4af2-8532-b201f16e3918"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/services/Bookmark</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.logicaldoc.com">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:unbookmarkDocument>\r
+         <!--Optional:-->\r
+         <sid>${Properties#sid}</sid>\r
+         <docId>${Properties#docId}</docId>\r
+      </ws:unbookmarkDocument>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="51549999-ee47-4e04-8369-690e0c963fc8" name="Not SOAP Fault"/><con:assertion type="SOAP Response" id="629edd3c-79d3-4dd6-bff6-32c1ef6dbfae" name="SOAP Response"/><con:assertion type="Simple NotContains" id="90125f74-0ae0-4b48-89bb-dd2180322033" name="Not Contains"><con:configuration><token>*</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://endpoint.soap.webservice.logicaldoc.com/Bookmark/unbookmarkDocument" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="390fc9b2-c269-476d-bccc-e47e947f95af" name="getBookmarks2"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapBookmarkServiceServiceSoapBinding</con:interface><con:operation>getBookmarks</con:operation><con:request name="getBookmarks2" id="ec1b2216-b793-4100-a752-d188e2be28f9"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8888/services/Bookmark</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.logicaldoc.com">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:getBookmarks>\r
+         <!--Optional:-->\r
+         <sid>${Properties#sid}</sid>\r
+      </ws:getBookmarks>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d26d701f-b564-48da-b198-a409bc62e13a" name="SOAP Response"/><con:assertion type="SOAP Fault Assertion" id="f731e469-de68-40b9-974e-1a8f1ca9131a" name="Not SOAP Fault"/><con:assertion type="Simple NotContains" id="9cfd622d-3707-4ef2-a009-75effbca69b4" name="Not ContainsTitle"><con:configuration><token>Title</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://endpoint.soap.webservice.logicaldoc.com/Bookmark/getBookmarks" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="properties" name="Properties" id="f8cec697-4d23-443d-8390-48f0ac141aad"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>2e9471d6-097a-494a-ab9e-501873eb89c0</con:value></con:property><con:property><con:name>editor</con:name><con:value>0</con:value></con:property><con:property><con:name>mandatory</con:name><con:value>6</con:value></con:property><con:property><con:name>name</con:name><con:value>name</con:value></con:property><con:property><con:name>type</con:name><con:value>1</con:value></con:property><con:property><con:name>date</con:name><con:value>2017-05-17</con:value></con:property><con:property><con:name>fileName</con:name><con:value>nomFichier</con:value></con:property><con:property><con:name>fileSize</con:name><con:value>900000000</con:value></con:property><con:property><con:name>folderId</con:name><con:value>3473408</con:value></con:property><con:property><con:name>id</con:name><con:value>600000000</con:value></con:property><con:property><con:name>title</con:name><con:value>Title</con:value></con:property><con:property><con:name>type2</con:name><con:value>type</con:value></con:property><con:property><con:name>content</con:name><con:value>cid:201825691055</con:value></con:property><con:property><con:name>tag</con:name><con:value>mot</con:value></con:property><con:property><con:name>docid</con:name><con:value>3309608</con:value></con:property></con:properties></con:config></con:testStep><con:properties/></con:testCase>
