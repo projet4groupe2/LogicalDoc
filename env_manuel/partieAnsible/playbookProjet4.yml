@@ -1,0 +1,58 @@
+---
+- name: Installation des postes de recetteurs
+  gather_facts: no
+  hosts: bba6ce177fa5
+  tasks:
+   - name: 1) ping du conteneur
+     ping:
+   - name: 2) ajout du repo contenant java 8 
+     apt_repository:
+      repo: 'ppa:webupd8team/java'
+      state: present 
+      update_cache: yes 
+
+   - name: 3) installation java
+     apt:
+      name: default-jre
+      state: present
+      
+   - name: 4) téléchargement de soapui
+     unarchive:
+      src: https://s3.amazonaws.com/downloads.eviware/soapuios/5.4.0/SoapUI-5.4.0-linux-bin.tar.gz
+      dest: /opt
+      remote_src: yes
+
+
+   - name: 5) installation de firefox et chrome
+     apt:
+       name: "{{ item }}"
+       state: present
+      
+     with_items:
+       - firefox
+       - chromium-chromedriver
+
+   - name: 6) téléchargement de SquirreL
+     unarchive:
+      src: https://netix.dl.sourceforge.net/project/squirrel-sql/1-stable/3.8.1-plainzip/squirrelsql-3.8.1-standard.zip
+      dest: /opt
+      remote_src: yes
+
+   - name: 7) téléchargement de la library postgre
+     get_url: 
+      url: https://jdbc.postgresql.org/download/postgresql-42.2.2.jar
+      dest: /opt/squirrelsql-3.8.1-standard/lib/postgresql-42.2.2.jar
+      force: yes
+
+
+   - name: 8) téléchargement de la library mysql
+     unarchive:
+      src: https://cdn.mysql.com//Downloads/Connector-J/mysql-connector-java-8.0.11.tar.gz
+      dest: /opt/squirrelsql-3.8.1-standard/lib
+      remote_src: yes
+
+   - name: 9) téléchargement de zap proxy
+     unarchive:
+      src: https://github.com/zaproxy/zaproxy/releases/download/2.7.0/ZAP_2.7.0_Linux.tar.gz 
+      dest: /opt
+      remote_src: yes
